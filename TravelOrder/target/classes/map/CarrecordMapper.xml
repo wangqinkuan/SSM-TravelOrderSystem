@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="travel.map.CarrecordMapper" >
+  <resultMap id="BaseResultMap" type="travel.bean.Carrecord" >
+    <id column="id" property="Id" jdbcType="INTEGER" />
+    <result column="car_id" property="carId" jdbcType="INTEGER" />   
+    <result column="status_name" property="status" jdbcType="VARCHAR" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    
+    <result column="car_type_id" property="car.carTypeId" jdbcType="INTEGER" />
+    <result column="location" property="car.location" jdbcType="VARCHAR" />
+    <result column="num_cars" property="car.numCars" jdbcType="INTEGER" />
+    <result column="num_avail" property="car.numAvail" jdbcType="INTEGER" />
+  	<result column="price" property="car.price" jdbcType="REAL" />
+    <result column="car_num" property="car.carNum" jdbcType="VARCHAR" />
+  	
+  	<!-- 显示车辆类型的字段 -->
+  	<result column="car_type" property="car.carType" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="selectCarRecordByCustId" resultMap="BaseResultMap">
+  	select 
+  	id,car_num,price,car_id,update_date,car_type,location,num_cars,num_avail,status_name 
+  	from (select * from carrecord where cust_id=#{custId}) r 
+  	NATURAL join cars 
+  	NATURAL join cartype 
+  	NATURAL join recordstatus
+  	ORDER BY update_date desc
+  </select>
+  
+  <update id="updateCarStatusByRecordId" statementType="CALLABLE">
+  	{
+  		call CAR_CANCEL(#{id,mode=IN},#{car_id,mode=IN})
+  	}
+  </update>
+  
+</mapper>

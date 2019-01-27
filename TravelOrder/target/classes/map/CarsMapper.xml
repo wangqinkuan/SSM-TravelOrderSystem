@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="travel.map.CarsMapper" >
+  <resultMap id="BaseResultMap" type="travel.bean.Cars" >
+    <id column="car_id" property="carId" jdbcType="INTEGER" />
+    
+    <result column="price" property="price" jdbcType="REAL" />
+    <result column="car_num" property="carNum" jdbcType="VARCHAR" />
+    <result column="car_type_id" property="carTypeId" jdbcType="INTEGER" />
+    <result column="location" property="location" jdbcType="VARCHAR" />
+    <result column="num_cars" property="numCars" jdbcType="INTEGER" />
+    <result column="num_avail" property="numAvail" jdbcType="INTEGER" />
+  	<!-- 显示车辆类型的字段 -->
+  	<result column="car_type" property="carType" jdbcType="VARCHAR" />
+  	
+  </resultMap>
+  <!-- 基础字段 -->
+  <sql id="Base_Column_List" >
+    car_id, car_type_id, location, num_cars, num_avail,car_num,price
+  </sql>
+  <!-- 视图 -->
+  <sql id="View_Column_List" >
+    car_id, car_type, location, num_cars, num_avail,car_num,price
+  </sql>
+  <!-- 显示全部车辆及其类型 -->
+  <select id="selectAllCars" resultMap="BaseResultMap">
+  	select 
+  	<include refid="View_Column_List"/>
+  	from cars NATURAL join cartype
+  </select>
+    <!-- 根据位置查询车辆及其类型 -->
+  <select id="selectCarsByLocation" resultMap="BaseResultMap">
+  	select
+  	<include refid="View_Column_List"/>
+  	from
+  	(
+	  	select 
+	  	*
+	  	from cars where location like CONCAT('%',#{location},'%') 
+  	) c
+  	NATURAL join cartype
+  </select>
+  <!-- 存储过程预约车 -->
+  <insert id="orderCar" statementType="CALLABLE">
+  	{
+  		call CAR_INSERT(#{car_id,mode=IN},#{cust_id,mode=IN})
+  	}
+  </insert>
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from cars
+    where car_id = #{carId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from cars
+    where car_id = #{carId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="travel.bean.Cars" >
+    insert into cars (car_id, car_type_id, location, 
+      num_cars, num_avail)
+    values (#{carId,jdbcType=INTEGER}, #{carTypeId,jdbcType=INTEGER}, #{location,jdbcType=VARCHAR}, 
+      #{numCars,jdbcType=INTEGER}, #{numAvail,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="travel.bean.Cars" >
+    insert into cars
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="carId != null" >
+        car_id,
+      </if>
+      <if test="carTypeId != null" >
+        car_type_id,
+      </if>
+      <if test="location != null" >
+        location,
+      </if>
+      <if test="numCars != null" >
+        num_cars,
+      </if>
+      <if test="numAvail != null" >
+        num_avail,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="carId != null" >
+        #{carId,jdbcType=INTEGER},
+      </if>
+      <if test="carTypeId != null" >
+        #{carTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="location != null" >
+        #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="numCars != null" >
+        #{numCars,jdbcType=INTEGER},
+      </if>
+      <if test="numAvail != null" >
+        #{numAvail,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="travel.bean.Cars" >
+    update cars
+    <set >
+      <if test="carTypeId != null" >
+        car_type_id = #{carTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="location != null" >
+        location = #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="numCars != null" >
+        num_cars = #{numCars,jdbcType=INTEGER},
+      </if>
+      <if test="numAvail != null" >
+        num_avail = #{numAvail,jdbcType=INTEGER},
+      </if>
+    </set>
+    where car_id = #{carId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="travel.bean.Cars" >
+    update cars
+    set car_type_id = #{carTypeId,jdbcType=INTEGER},
+      location = #{location,jdbcType=VARCHAR},
+      num_cars = #{numCars,jdbcType=INTEGER},
+      num_avail = #{numAvail,jdbcType=INTEGER}
+    where car_id = #{carId,jdbcType=INTEGER}
+  </update>
+</mapper>

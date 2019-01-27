@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="travel.map.CustomersMapper" >
+  <resultMap id="BaseResultMap" type="travel.bean.Customers" >
+    <id column="cust_id" property="custId" jdbcType="INTEGER" />
+    <result column="cust_name" property="custName" jdbcType="VARCHAR" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    cust_id, cust_name, username, password
+  </sql>
+  
+  <select id="selectByUserNameAndPassWord" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from customers
+    where username = #{username,jdbcType=VARCHAR} and password=#{password,jdbcType=VARCHAR}
+  </select>
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from customers
+    where cust_id = #{custId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from customers
+    where cust_id = #{custId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="travel.bean.Customers" >
+    insert into customers (username,password,cust_name)
+    select  #{username,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},#{custName,jdbcType=VARCHAR}
+    from DUAL where not EXISTS(select * from customers where username=#{username,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="travel.bean.Customers" >
+    insert into customers
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="custId != null" >
+        cust_id,
+      </if>
+      <if test="custName != null" >
+        cust_name,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="custId != null" >
+        #{custId,jdbcType=INTEGER},
+      </if>
+      <if test="custName != null" >
+        #{custName,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="travel.bean.Customers" >
+    update customers
+    <set >
+      <if test="custName != null" >
+        cust_name = #{custName,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where cust_id = #{custId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="travel.bean.Customers" >
+    update customers
+    set cust_name = #{custName,jdbcType=VARCHAR},
+      username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR}
+    where cust_id = #{custId,jdbcType=INTEGER}
+  </update>
+</mapper>

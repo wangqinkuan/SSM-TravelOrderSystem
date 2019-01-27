@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="travel.map.HotelrecordMapper" >
+  <resultMap id="BaseResultMap" type="travel.bean.Hotelrecord" >
+    <id column="id" property="Id" jdbcType="INTEGER" />
+    <result column="hotel_id" property="hotelId" jdbcType="INTEGER" />    
+    <result column="status_name" property="status" jdbcType="VARCHAR" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+ 
+ 	<result column="name" property="hotel.name" jdbcType="VARCHAR" />
+    <result column="location" property="hotel.location" jdbcType="VARCHAR" />
+    <result column="price" property="hotel.price" jdbcType="INTEGER" />
+    <result column="num_rooms" property="hotel.numRooms" jdbcType="INTEGER" />
+    <result column="num_avail" property="hotel.numAvail" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <select id="selectHotelRecordByCustId" resultMap="BaseResultMap">
+	  SELECT 
+	  id,name,hotel_id,update_date,location,price,num_rooms,num_avail,status_name
+	  from (select * from hotelrecord where cust_id=#{custId}) r 
+	  NATURAL join hotels 
+	  NATURAL join recordstatus
+	  ORDER BY update_date desc
+  </select>
+  
+  <update id="updateHotelStatusByRecordId" statementType="CALLABLE">
+  	{
+  		call HOTEL_CANCEL(#{id,mode=IN},#{hotel_id,mode=IN})
+  	}
+  </update>
+</mapper>

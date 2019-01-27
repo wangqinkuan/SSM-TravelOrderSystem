@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="travel.map.FlightsMapper" >
+  <resultMap id="BaseResultMap" type="travel.bean.Flights" >
+    <id column="flight_id" property="flightId" jdbcType="INTEGER" />
+    <result column="start_date" property="startDate" jdbcType="TIMESTAMP" />
+    <result column="flight_num" property="flightNum" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="REAL" />
+    <result column="seat_num" property="seatNum" jdbcType="INTEGER" />
+    <result column="avail_num" property="availNum" jdbcType="INTEGER" />
+    <result column="from_city" property="fromCity" jdbcType="VARCHAR" />
+    <result column="ariv_city" property="arivCity" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    start_date,flight_id, flight_num, price, seat_num, avail_num, from_city, ariv_city
+  </sql>
+  
+  <select id="selectAllFlights" resultMap="BaseResultMap">
+  	select 
+  	<include refid="Base_Column_List" />
+  	 from flights
+  </select>
+  
+  
+  <select id="selectFlightsByStartAndEnd" resultMap="BaseResultMap">
+  	select 
+  	<include refid="Base_Column_List" />
+  	 from flights
+  	 where
+  	 from_city LIKE CONCAT('%',#{start},'%') and ariv_city LIKE CONCAT('%',#{end},'%')
+  </select>
+  
+  <!-- 调用存储过程更新航班，插入航班记录数据 -->
+  <insert id="orderFlight" statementType="CALLABLE">
+  	{
+  		call FLIGHT_INSERT(#{flight_id,mode=IN},#{cust_id,mode=IN})
+  	}
+  </insert>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from flights
+    where flight_id = #{flightId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from flights
+    where flight_id = #{flightId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="travel.bean.Flights" >
+    insert into flights (start_date,flight_num, price, 
+      seat_num, avail_num, from_city, 
+      ariv_city)
+    values (#{startDate,jdbcType=TIMESTAMP},#{flightNum,jdbcType=VARCHAR}, #{price,jdbcType=REAL}, 
+      #{seatNum,jdbcType=INTEGER}, #{availNum,jdbcType=INTEGER}, #{fromCity,jdbcType=VARCHAR}, 
+      #{arivCity,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="travel.bean.Flights" >
+    insert into flights
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="flightId != null" >
+        flight_id,
+      </if>
+      <if test="flightNum != null" >
+        flight_num,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="seatNum != null" >
+        seat_num,
+      </if>
+      <if test="availNum != null" >
+        avail_num,
+      </if>
+      <if test="fromCity != null" >
+        from_city,
+      </if>
+      <if test="arivCity != null" >
+        ariv_city,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="flightId != null" >
+        #{flightId,jdbcType=INTEGER},
+      </if>
+      <if test="flightNum != null" >
+        #{flightNum,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=REAL},
+      </if>
+      <if test="seatNum != null" >
+        #{seatNum,jdbcType=INTEGER},
+      </if>
+      <if test="availNum != null" >
+        #{availNum,jdbcType=INTEGER},
+      </if>
+      <if test="fromCity != null" >
+        #{fromCity,jdbcType=VARCHAR},
+      </if>
+      <if test="arivCity != null" >
+        #{arivCity,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="travel.bean.Flights" >
+    update flights
+    <set >
+      <if test="flightNum != null" >
+        start_date = #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="flightNum != null" >
+        flight_num = #{flightNum,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=REAL},
+      </if>
+      <if test="seatNum != null" >
+        seat_num = #{seatNum,jdbcType=INTEGER},
+      </if>
+      <if test="availNum != null" >
+        avail_num = #{availNum,jdbcType=INTEGER},
+      </if>
+      <if test="fromCity != null" >
+        from_city = #{fromCity,jdbcType=VARCHAR},
+      </if>
+      <if test="arivCity != null" >
+        ariv_city = #{arivCity,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where flight_id = #{flightId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="travel.bean.Flights" >
+    update flights
+    set flight_num = #{flightNum,jdbcType=VARCHAR},
+      start_date=#{startDate,jdbcType=TIMESTAMP},
+      price = #{price,jdbcType=REAL},
+      seat_num = #{seatNum,jdbcType=INTEGER},
+      avail_num = #{availNum,jdbcType=INTEGER},
+      from_city = #{fromCity,jdbcType=VARCHAR},
+      ariv_city = #{arivCity,jdbcType=VARCHAR}
+    where flight_id = #{flightId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByFlightNum" parameterType="travel.bean.Flights" >
+    update flights
+    set 
+      start_date=#{startDate,jdbcType=TIMESTAMP},
+      price = #{price,jdbcType=REAL},
+      seat_num = #{seatNum,jdbcType=INTEGER},
+      avail_num = #{availNum,jdbcType=INTEGER},
+      from_city = #{fromCity,jdbcType=VARCHAR},
+      ariv_city = #{arivCity,jdbcType=VARCHAR}
+    where flight_num = #{flightNum,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="travel.map.HotelsMapper" >
+  <resultMap id="BaseResultMap" type="travel.bean.Hotels" >
+    <id column="hotel_id" property="hotelId" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="location" property="location" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="INTEGER" />
+    <result column="num_rooms" property="numRooms" jdbcType="INTEGER" />
+    <result column="num_avail" property="numAvail" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    hotel_id, location, price, num_rooms, num_avail,name
+  </sql>
+  
+  <select id="selectAllHotels" resultMap="BaseResultMap">
+  	select
+  	<include refid="Base_Column_List" />
+    from hotels
+  </select>
+  
+  <select id="selectHotelsByLocation" resultMap="BaseResultMap">   
+  	select
+  	<include refid="Base_Column_List" />
+    from hotels
+	where location like CONCAT('%',#{location},'%')
+  </select>
+ 
+  
+  <!-- 订旅店 存储过程调用 -->
+  <!-- 调用存储过程更新航班，插入航班记录数据 -->
+  <insert id="orderHotel" statementType="CALLABLE">
+  	{
+  		call HOTEL_INSERT(#{hotel_id,mode=IN},#{cust_id,mode=IN})
+  	}
+  </insert>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from hotels
+    where hotel_id = #{hotelId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from hotels
+    where hotel_id = #{hotelId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="travel.bean.Hotels" >
+    insert into hotels (hotel_id, location, price, 
+      num_rooms, num_avail)
+    values (#{hotelId,jdbcType=INTEGER}, #{location,jdbcType=VARCHAR}, #{price,jdbcType=INTEGER}, 
+      #{numRooms,jdbcType=INTEGER}, #{numAvail,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="travel.bean.Hotels" >
+    insert into hotels
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="hotelId != null" >
+        hotel_id,
+      </if>
+      <if test="location != null" >
+        location,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="numRooms != null" >
+        num_rooms,
+      </if>
+      <if test="numAvail != null" >
+        num_avail,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="hotelId != null" >
+        #{hotelId,jdbcType=INTEGER},
+      </if>
+      <if test="location != null" >
+        #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=INTEGER},
+      </if>
+      <if test="numRooms != null" >
+        #{numRooms,jdbcType=INTEGER},
+      </if>
+      <if test="numAvail != null" >
+        #{numAvail,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="travel.bean.Hotels" >
+    update hotels
+    <set >
+      <if test="location != null" >
+        location = #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=INTEGER},
+      </if>
+      <if test="numRooms != null" >
+        num_rooms = #{numRooms,jdbcType=INTEGER},
+      </if>
+      <if test="numAvail != null" >
+        num_avail = #{numAvail,jdbcType=INTEGER},
+      </if>
+    </set>
+    where hotel_id = #{hotelId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="travel.bean.Hotels" >
+    update hotels
+    set location = #{location,jdbcType=VARCHAR},
+      price = #{price,jdbcType=INTEGER},
+      num_rooms = #{numRooms,jdbcType=INTEGER},
+      num_avail = #{numAvail,jdbcType=INTEGER}
+    where hotel_id = #{hotelId,jdbcType=INTEGER}
+  </update>
+</mapper>

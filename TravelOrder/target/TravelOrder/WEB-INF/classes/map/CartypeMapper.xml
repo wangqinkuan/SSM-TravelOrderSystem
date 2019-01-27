@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="travel.map.CartypeMapper" >
+  <resultMap id="BaseResultMap" type="travel.bean.Cartype" >
+    <id column="car_type_id" property="carTypeId" jdbcType="INTEGER" />
+    <result column="car_type" property="carType" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    car_type_id, car_type
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from cartype
+    where car_type_id = #{carTypeId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from cartype
+    where car_type_id = #{carTypeId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="travel.bean.Cartype" >
+    insert into cartype (car_type_id, car_type)
+    values (#{carTypeId,jdbcType=INTEGER}, #{carType,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="travel.bean.Cartype" >
+    insert into cartype
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="carTypeId != null" >
+        car_type_id,
+      </if>
+      <if test="carType != null" >
+        car_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="carTypeId != null" >
+        #{carTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="carType != null" >
+        #{carType,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="travel.bean.Cartype" >
+    update cartype
+    <set >
+      <if test="carType != null" >
+        car_type = #{carType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where car_type_id = #{carTypeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="travel.bean.Cartype" >
+    update cartype
+    set car_type = #{carType,jdbcType=VARCHAR}
+    where car_type_id = #{carTypeId,jdbcType=INTEGER}
+  </update>
+</mapper>
