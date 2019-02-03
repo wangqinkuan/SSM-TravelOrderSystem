@@ -20,15 +20,7 @@ public class CustController {
 	CustService custservice;
 	
 	@RequestMapping(value="/Regist",method=RequestMethod.POST)
-	public String Regist(HttpServletRequest request) {	
-		String username=request.getParameter("username");
-		String password=request.getParameter("password");
-		String custname=request.getParameter("custname");
-		Customers customers=new Customers();
-		customers.setCustName(custname);
-		customers.setUsername(username);
-		customers.setPassword(password);
-		
+	public String Regist(Customers customers) {			
 		custservice.Regist(customers);
 		return "Login";
 	}

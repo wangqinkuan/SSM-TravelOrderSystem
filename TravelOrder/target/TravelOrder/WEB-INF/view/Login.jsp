@@ -1,193 +1,88 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
+    
+<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+<link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" />
 <!doctype html>
 <html>
 <head>
 <meta charset="utf-8">
 <title>login</title>
-<style type="text/css">
-*{
-	margin: 0;
-	padding: 0;
-}
-#wrap {
-	height: 719px;
-	width: 100;
-	background-image: url(4.jpg);
-	background-repeat: no-repeat;
-	background-position: center center;
-	position: relative;
-}
-#head {
-	height: 120px;
-	width: 100;
-	background-color: #66CCCC;
-	text-align: center;
-	position: relative;
-}
-#foot {
-	width: 100;
-	height: 126px;
-	background-color: #CC9933;
-	position: relative;
-}
-#wrap .logGet {
-	height: 408px;
-	width: 368px;  
-	position: absolute;
-	background-color: #FFFFFF;
-	top: 20%;
-	right: 15%;
-}
-.logC input {
-	width: 100%;
-	height: 45px;
-	background-color: #ee7700;
-	border: none;
-	color: white;
-	font-size: 18px;
-}
-.logGet .logD.logDtip .p1 {
-	display: inline-block;
-	font-size: 28px;
-	margin-top: 30px;
-	width: 86%;
-}
-#wrap .logGet .logD.logDtip {
-	width: 86%;
-	border-bottom: 1px solid #ee7700;
-	margin-bottom: 60px;
-	margin-top: 0px;
-	margin-right: auto;
-	margin-left: auto;
-}
-.logGet .lgD img {
-	position: absolute;
-	top: 12px;
-	left: 8px;
-}
-.logGet .lgD input {
-	width: 100%;
-	height: 42px;
-	text-indent: 2.5rem;
-}
-#wrap .logGet .lgD {
-	width: 86%;
-	position: relative;
-	margin-bottom: 30px;
-	margin-top: 30px;
-	margin-right: auto;
-	margin-left: auto;
-}
-#wrap .logGet .logC {
-	width: 86%;
-	margin-top: 0px;
-	margin-right: auto;
-	margin-bottom: 0px;
-	margin-left: auto;
-}
- 
- 
-.title {
-	font-family: "宋体";
-	color: #FFFFFF;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);  /* 使用css3的transform来实现 */
-	font-size: 36px;
-	height: 40px;
-	width: 30%;
-}
- 
-.copyright {
-	font-family: "宋体";
-	color: #FFFFFF;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);  /* 使用css3的transform来实现 */
-	height: 60px;
-	width: 40%;
-	text-align:center;
-}
-	
- 
-#foot .copyright .img {
-	width: 100%;
-	height: 24px;
-	position: relative;
-}
-.copyright .img .icon {
-	display: inline-block;
-	width: 24px;
-	height: 24px;
-	margin-left: 22px;
-	vertical-align: middle;
-	background-image: url(%E7%94%B5%E5%AD%90%E9%82%AE%E4%BB%B6.png);
-	background-repeat: no-repeat;
-	vertical-align: middle;
-	margin-right: 5px;
-}
-	
-.copyright .img .icon1 {
-	display: inline-block;
-	width: 24px;
-	height: 24px;
-	margin-left: 22px;
-	vertical-align: middle;
-	background-image: url(%E5%9C%B0%E5%9D%80.png);
-	background-repeat: no-repeat;
-	vertical-align: middle;
-	margin-right: 5px;
-}
-.copyright .img .icon2 {
-	display: inline-block;
-	width: 24px;
-	height: 24px;
-	margin-left: 22px;
-	vertical-align: middle;
-	background-image: url(%E8%81%94%E7%B3%BB%E6%96%B9%E5%BC%8F.png);
-	background-repeat: no-repeat;
-	vertical-align: middle;
-	margin-right: 5px;
-}
-#foot .copyright p {
-	height: 24px;
-	width: 100%;
-}
-</style>
+
 </head>
- 
 <body>
-<div class="header" id="head">
-  <div class="title">旅行订单管理</div>
-	
-</div>
-<form method="post" action="/TravelOrder/Cust/Login">
-<div class="wrap" id="wrap">
-	<div class="logGet">
-			<!-- 头部提示信息 -->
-			<div class="logD logDtip">
-				<p class="p1">登录</p>
-			</div>
-			<!-- 输入框 -->
-			<div class="lgD">				
-				<input type="text" name="username"
-					placeholder="输入用户名" />
-			</div>
-			<div class="lgD">				
-				<input type="text" name="password"
-					placeholder="输入用户密码" />
-			</div>
-			<div class="logC">
-				<input type="submit" value="登录" />
-			</div>
-		</div>
-</div>
-</form>
+<form method="post" role="form" action="/TravelOrder/Cust/Login">
 
 	
+			<div class="form-group">			
+			<label for="u">用户名</label>
+			<!-- 输入框 -->
+							
+				<input type="text" id="u" class="col-sm-2 form-control" name="username"
+					placeholder="输入用户名" />
+			</div>
+			<div class="form-group">	
+			 <label for="p">密码</label>
+						
+				<input type="text" class="col-sm-2 form-control" id="p" name="password"
+					placeholder="输入用户密码" />
+			</div>
+			
+			  <button class="btn btn-default" data-toggle="modal" data-target="#registModel" type="button">注册</button>
+			
+			
+				<button class="btn btn-default" type="button" onclick="document.forms[0].submit()"  >登录</button>
+			
+		
+
+</form>
+
+<div class="modal fade" id="registModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+					注册
+				</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" role="form" method="post" action="http://localhost:8080/TravelOrder/Cust/Regist">
+				  
+				  <div class="form-group">
+				    <label for="fn" class="col-sm-2 control-label">用户名</label>
+				    <div class="col-sm-10">
+				      <input type="text" class="form-control" id="un" name="username" placeholder="请输入用户名">
+				    </div>
+				  </div>
+				  <div class="form-group">
+				    <label for="sn" class="col-sm-2 control-label">密码</label>
+				    <div class="col-sm-10">
+				      <input type="text" class="form-control" id="pw" name="password" placeholder="请输入密码">
+				    </div>
+				  </div>
+				    <div class="form-group">
+				    <label for="an" class="col-sm-2 control-label">名称</label>
+				    <div class="col-sm-10">
+				      <input type="text" class="form-control" id="n" name="custname" placeholder="请输入姓名">
+				    </div>		     
+			     	</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+				</button>
+				<button type="button" class="btn btn-primary" onclick="document.forms[1].submit()">
+					注册
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+<!-- modal end -->	
 	
 </body>
 </html>

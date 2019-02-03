@@ -14,8 +14,7 @@
   String custName="default";
   Integer custId=0;
   if(customers==null){
-	  response.sendRedirect("http://localhost:8080/TravelOrder");
-	  //request.getRequestDispatcher("Login.jsp").forward(request, response);	 	
+	  response.sendRedirect("http://localhost:8080/TravelOrder");	   	
   }
   else{
 	  custName=customers.getCustName();

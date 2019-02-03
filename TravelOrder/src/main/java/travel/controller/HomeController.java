@@ -87,40 +87,7 @@ public class HomeController {
 	}
 	//处理添加请求
 	@RequestMapping(value="/create",method=RequestMethod.POST)
-	public String createFlight(HttpServletRequest request) {
-		try {
-			//解决中文乱码
-			request.setCharacterEncoding("UTF-8");
-		} catch (UnsupportedEncodingException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-		String flightNum=request.getParameter("flightNum");
-		Integer seatNum=Integer.valueOf(request.getParameter("seatNum"));
-		Integer availNum=Integer.valueOf(request.getParameter("availNum"));
-		Float price=Float.valueOf(request.getParameter("price"));
-		String fromCity=request.getParameter("fromCity");
-		String arivCity=request.getParameter("arivCity");
-		
-		DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date startTime=new Date();
-		try {
-			startTime=format.parse(request.getParameter("startTime"));
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("create"+fromCity);
-		Flights flights=new Flights();
-		flights.setArivCity(arivCity);
-		flights.setAvailNum(availNum);
-		flights.setFlightNum(flightNum);
-		flights.setFromCity(fromCity);
-		flights.setPrice(price);
-		flights.setStartDate(startTime);
-		flights.setSeatNum(seatNum);
-		
+	public String createFlight(Flights flights) {		
 		flightservice.createFlight(flights);
 		
 		return "Home";
@@ -129,39 +96,7 @@ public class HomeController {
 	
 	//处理更新请求
 	@RequestMapping(value="/update",method=RequestMethod.POST)
-	public String updateFlight(HttpServletRequest request) {
-		try {
-			//解决中文乱码
-			request.setCharacterEncoding("UTF-8");
-		} catch (UnsupportedEncodingException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-		String flightNum=request.getParameter("flightNum");
-		Integer seatNum=Integer.valueOf(request.getParameter("seatNum"));
-		Integer availNum=Integer.valueOf(request.getParameter("availNum"));
-		Float price=Float.valueOf(request.getParameter("price"));
-		String fromCity=request.getParameter("fromCity");
-		String arivCity=request.getParameter("arivCity");
-		
-		DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date startTime=new Date();
-		try {
-			startTime=format.parse(request.getParameter("startTime"));
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("update"+fromCity);
-		Flights flights=new Flights();
-		flights.setArivCity(arivCity);
-		flights.setAvailNum(availNum);
-		flights.setFlightNum(flightNum);
-		flights.setFromCity(fromCity);
-		flights.setPrice(price);
-		flights.setStartDate(startTime);
-		flights.setSeatNum(seatNum);
+	public String updateFlight(Flights flights) {
 		
 		flightservice.updateFlightByFlightNum(flights);
 		

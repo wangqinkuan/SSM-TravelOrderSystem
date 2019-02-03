@@ -30,10 +30,9 @@
     where cust_id = #{custId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="travel.bean.Customers" >
-    insert into customers (cust_id, cust_name, username, 
-      password)
-    values (#{custId,jdbcType=INTEGER}, #{custName,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, 
-      #{password,jdbcType=VARCHAR})
+    insert into customers (username,password,cust_name)
+    select  #{username,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},#{custName,jdbcType=VARCHAR}
+    from DUAL where not EXISTS(select * from customers where username=#{username,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="travel.bean.Customers" >
     insert into customers
